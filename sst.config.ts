@@ -18,6 +18,7 @@ class NextSite extends NextjsSite {
 
   constructor(_scope: Construct, _id: string, _props?: NextjsSiteProps){
     super(_scope, _id, _props);
+    console.log('CONSTRUCAO: NEXT SITE')
   }
 
   protected override initBuildConfig() {
@@ -34,25 +35,25 @@ class NextSite extends NextjsSite {
     };
   }
 
-  // protected override createFunctionForEdge() {
-  //   const { runtime, timeout, memorySize, bind, permissions, environment } = this.props;
-  //   console.log('CREATE FUNCTION FOR EDGE')
-  //   return new EdgeFunction(this, "ServerFunction", {
-  //       bundle: path.join(this.props.path, ".open-next", "server-function"),
-  //       handler: "index.handler",
-  //       runtime,
-  //       timeout,
-  //       memorySize,
-  //       bind,
-  //       permissions,
-  //       environment: {
-  //           ...environment,
-  //           CACHE_BUCKET_NAME: this.bucket.bucketName,
-  //           CACHE_BUCKET_KEY_PREFIX: "_cache",
-  //           CACHE_BUCKET_REGION: Stack.of(this).region,
-  //       },
-  //   });
-  // }
+  protected override createFunctionForEdge() {
+    const { runtime, timeout, memorySize, bind, permissions, environment } = this.props;
+    console.log('CREATE FUNCTION FOR EDGE')
+    return new EdgeFunction(this, "ServerFunction", {
+        bundle: path.join(this.props.path, ".open-next", "server-function"),
+        handler: "index.handler",
+        runtime,
+        timeout,
+        memorySize,
+        bind,
+        permissions,
+        environment: {
+            ...environment,
+            CACHE_BUCKET_NAME: this.bucket.bucketName,
+            CACHE_BUCKET_KEY_PREFIX: "_cache",
+            CACHE_BUCKET_REGION: Stack.of(this).region,
+        },
+    });
+  }
 
 }
 
